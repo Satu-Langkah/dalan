@@ -127,7 +127,36 @@ struct EmptyStateView: View {
     }
 }
 
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+#Preview("Mock Data") {
+    // Create an in-memory container for previews
+    let container = try! ModelContainer(
+        for: Item.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+    )
+    let context = ModelContext(container)
+
+    // Seed some mock items
+    let samples: [Item] = [
+        Item(
+            url: "https://www.tiktok.com/@creator/video/1234567890",
+            platform: .tiktok,
+            timestamp: .now
+        ),
+        Item(
+            url: "https://www.instagram.com/reel/ABCDEFG/",
+            platform: .instagram,
+            timestamp: .now.addingTimeInterval(-3600)
+        ),
+        Item(
+            url: "https://www.youtube.com/shorts/HijklMnOp",
+            platform: .youtubeShorts,
+            timestamp: .now.addingTimeInterval(-86400)
+        )
+    ]
+
+    for item in samples { context.insert(item) }
+    try? context.save()
+
+    return ContentView()
+        .modelContainer(container)
 }
