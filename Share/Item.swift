@@ -1,6 +1,6 @@
 //
 //  Item.swift
-//  Dalan
+//  Share
 //
 //  Created by Jerry Febriano on 29/09/25.
 //
@@ -33,3 +33,4 @@ final class Item {
         LinkPlatform(rawValue: platform) ?? .unknown
     }
 }
+
